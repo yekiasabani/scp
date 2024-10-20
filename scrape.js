@@ -1,16 +1,6 @@
 import puppeteer from 'puppeteer';
 const rate = async function getRate(res, currencies) {
-	const browser = await puppeteer.launch({
-        args: [
-            "--disable-setuid-sandbox",
-            "--no-sandbox",
-            "--single-process",
-            "--no-zygote"
-        ],
-        executablePath: process.env.NODE_ENV === 'production' 
-        ? process.env.PUPPETEER_EXECUTABLE_PATH 
-        : puppeteer.executablePath()
-    });
+	const browser = await puppeteer.launch();
     try {
         const page = await browser.newPage();
         await page.goto('https://bonbast.com/');
@@ -25,7 +15,7 @@ const rate = async function getRate(res, currencies) {
         console.log(rates);
         res.status(200).json(rates);
     } catch (err) {
-        res.status(404).send(`Somethine went wrong => ${err}`);
+        res.send(`Somethine went wrong => ${err}`);
     } finally {
         browser.close();
     }
